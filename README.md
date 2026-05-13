@@ -247,7 +247,7 @@ The sample videos are not committed to this repo. Keep them as an external event
 
 Recommended options:
 
-- Best for most events: store `dev-profile-sample-data.zip` in Google Drive, SharePoint, NGC, or another shared download location, then download it to each demo laptop.
+- Best for most events: download `dev-profile-sample-data.zip` from [Google Drive](https://drive.google.com/file/d/1-TMUKVSpnyOL6DI1jPDrEHo1vC97vg8d/view?usp=sharing), then unzip it on each demo laptop.
 - Good for repeatable GitHub-only setup: attach the zip to a GitHub Release instead of committing it to the source tree.
 - Avoid unless the videos are tiny: committing `.mp4` files directly to this repo, even with Git LFS, because every event clone becomes media distribution too.
 
