@@ -239,34 +239,142 @@ scripts/dev-profile.sh up -p base \
   --vlm nvidia/cosmos-reason2-8b
 ```
 
-## Demo Prompts
+## How To Demo
 
-Good first prompts:
+### Sample Video Location
+
+The sample videos are not committed to this repo. Keep them as an external event asset so `git clone` stays fast and the repo does not consume Git LFS bandwidth for demo media.
+
+Recommended options:
+
+- Best for most events: store `dev-profile-sample-data.zip` in Google Drive, SharePoint, NGC, or another shared download location, then download it to each demo laptop.
+- Good for repeatable GitHub-only setup: attach the zip to a GitHub Release instead of committing it to the source tree.
+- Avoid unless the videos are tiny: committing `.mp4` files directly to this repo, even with Git LFS, because every event clone becomes media distribution too.
+
+On the validated Spark, the sample bundle is available at:
 
 ```text
-What happens in this video? Provide a chronological summary with timestamps.
+/home/nvidia/Videos/dev-profile-sample-data.zip
+/home/nvidia/Videos/dev-profile-sample-data/
+```
+
+The browser UI uploads files from the computer running the browser. If the operator opens `http://<spark-ip>:3000` from a laptop, the videos need to be on that laptop. The Spark-local copy is useful as a backup and for API upload workflows.
+
+To copy the bundle from the Spark to a laptop:
+
+```bash
+scp nvidia@<spark-ip>:/home/nvidia/Videos/dev-profile-sample-data.zip .
+unzip dev-profile-sample-data.zip
+```
+
+### Demo Flow
+
+1. Open the UI:
+
+```text
+http://<spark-ip>:3000
+```
+
+2. Upload one sample video.
+
+3. Start with a broad question:
+
+```text
+What happens in this video? Provide a chronological summary with timestamps. Only describe what is visible in the video.
+```
+
+4. Follow with a structured report:
+
+```text
+Generate a video analysis report. Include visible people, vehicles, equipment, safety concerns, operational concerns, and timestamped observations. Separate confirmed observations from uncertain possibilities.
+```
+
+5. For safety-sensitive clips, ask narrowly and explicitly. This usually gives better results than a broad question.
+
+### Prompt Menu
+
+Use these prompts with the sample videos in `dev-profile-sample-data`.
+
+#### `sample-sim-jaywalking.mp4`
+
+This is the pedestrian crossing clip. The model responded best when the prompt directly asked about diagonal crossing and told it not to invent external tools.
+
+```text
+Based only on the video content, focus on the pedestrian near the beginning of the video. Did the pedestrian stay within the marked crosswalk lines, or did they cross diagonally/outside the intended crosswalk path? Describe nearby vehicles and whether they appear stopped or moving. Do not use or request any external traffic simulation tools. If any detail is uncertain, say so.
 ```
 
 ```text
-Generate a video analysis report. Include visible people, vehicles, equipment, safety concerns, and timestamped observations.
+Generate a pedestrian safety report for this intersection video. Identify whether the pedestrian used the marked crosswalk correctly, describe the vehicles nearest the pedestrian, state any visible safety hazards, and provide timestamped observations. Base the report only on the video.
 ```
 
-For intersection clips:
+#### `sample-sim-traffic.mp4`
 
 ```text
-Based only on the video, generate a pedestrian safety assessment. Identify whether the pedestrian used the marked crosswalk correctly, describe nearby vehicles, and state any visible safety risks without using or requesting any external traffic simulation tools.
+Analyze the traffic flow in this intersection video. Identify vehicle types, paths through the intersection, lane usage, stopped or moving vehicles, and any visible near-conflicts or unusual maneuvers. Provide timestamped observations.
 ```
 
-For warehouse clips:
-
 ```text
-Generate a warehouse safety report. Focus on PPE, ladder use, forklift or pedestrian movement, blocked aisles, cones, caution tape, and timestamped safety observations.
+Generate a traffic operations report. Summarize vehicle movement patterns, congestion points, possible right-of-way concerns, and anything a traffic engineer should review manually.
 ```
 
-For bridge clips:
+#### `sample-drone-bridge.mp4`
 
 ```text
-Generate an inspection report for this bridge video. Include visible structural concerns, areas that need human follow-up, and timestamped observations.
+Generate a bridge inspection report based only on this drone video. Describe visible bridge components, corrosion or staining, deck or railing conditions, water or vegetation near the structure, and areas needing human follow-up. Include timestamps.
+```
+
+```text
+Act as a bridge inspection assistant. Separate confirmed visual observations from recommendations for follow-up inspection. Do not infer hidden structural damage that is not visible.
+```
+
+#### `sample-sim-box-conveyor.mp4`
+
+```text
+Analyze this simulated conveyor video. Identify each box or package that appears, describe its direction of travel, note any transfer points, stoppages, collisions, or misroutes, and provide a concise timestamped summary.
+```
+
+```text
+Generate an operations report for the conveyor scene. Include object movement, throughput concerns, abnormal behavior, and what an operator should check next.
+```
+
+#### `sample-warehouse-ladder.mp4`
+
+```text
+Generate a warehouse safety inspection report. Focus on ladder or rolling stair use, worker position, PPE, nearby pedestrians, blocked aisles, stored pallets, and timestamped safety observations.
+```
+
+```text
+Was the ladder or rolling stair used safely? Describe how the worker accessed elevated storage, whether another worker or object was nearby, and any visible fall, trip, or struck-by risks.
+```
+
+#### `warehouse_safety_0001.mp4`
+
+```text
+Analyze this warehouse clip for PPE and ladder safety. Identify workers, hard hats or vests, ladder or stair use, nearby pallets, aisle conditions, and any visible safety risks. Include timestamps.
+```
+
+```text
+Generate a short incident-prevention report for this warehouse aisle. Focus on elevated work, pedestrian movement, storage rack access, and whether the work area appears controlled.
+```
+
+#### `warehouse_safety_0002.mp4`
+
+```text
+Generate a warehouse safety report for this clip. Focus on the worker carrying a box, the person working from the rolling stair, pedestrian paths, aisle clearance, and any risks from carrying loads near active work.
+```
+
+```text
+Identify every person visible in the warehouse aisle and describe what each person does over time. Include PPE observations and timestamped safety concerns.
+```
+
+#### `warehouse_sample.mp4`
+
+```text
+Generate a full warehouse safety report for this longer clip. Track people, forklift movement, cones, caution tape, blocked aisles, carried boxes, PPE, and changing work zones. Include a timeline with timestamps.
+```
+
+```text
+Summarize the sequence of events in this warehouse video. Then list the top five safety or operations issues a supervisor should review, with supporting timestamps.
 ```
 
 ## Troubleshooting
@@ -341,4 +449,3 @@ http://<spark-ip>:3000
 ## Notes
 
 This repo is derived from NVIDIA's VSS blueprint implementation and keeps the upstream project layout. The root-level helper scripts are the preferred event operator interface.
-

@@ -7,6 +7,10 @@ deployments/developer-workflow/*/generated.env
 tmp/
 *.log
 
+# Event sample videos should live outside Git or be downloaded locally.
+sample-videos/*
+!sample-videos/README.md
+
 # Python and Node local artifacts
 __pycache__/
 *.py[cod]
