@@ -10,6 +10,14 @@ Spark VSS is an event-ready deployment wrapper for NVIDIA Video Search and Summa
 
 This repo is intended for demos where an operator needs a simple start, stop, and restart workflow.
 
+## Sudo Prompts
+
+First-time setup may need sudo for host packages, Docker/NVIDIA toolkit configuration, or setup preflight checks. Passwordless sudo is not required, but install commands must run from an interactive terminal so sudo can prompt. When installing over SSH, use:
+
+```bash
+ssh -t nvidia@<spark-ip>
+```
+
 ## What This Demo Supports
 
 Use this deployment for:
